@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <br>
+        <h1>Basket</h1>
+        <br>
+        <div class="container">
+            <p>Laundry Man: {{object.laundry_man.laundry_man.username}}</p>
+            <p>clothing description: {{object.clothing_description}}</p>
+            {% if object.clothing_description == 'Weight'%}
+                <p>weight: {{object.weight}} kg</p>
+            {% elif object.clothing_description == 'Quantity' %}
+                <p>no of shirt: {{object.shirt}}</p>
+                <p>no of trouser: {{object.trouser}}</p>
+                <p>no of suits and jacket: {{object.suits_and_jackets}}</p>
+            {% endif %}
+            {% if object.iron %}
+                <p>no of shirt: {{object.iron.shirt}}</p>
+                <p>no of trouser: {{object.iron.trouser}}</p>
+                <p>no of suits and jacket: {{object.iron.suits_and_jackets}}</p>
+            {% endif %}
+            <p>Cost : {{object.get_total_cost}}</p>
+        </div>
+        {% if user.client %}
+            <a href="{% url 'dashboard' user.client.slug%}" class="btn btn-primary">Back</a>
+        {% elif user.laundryman %}
+            <a href="{% url 'office' user.laundryman.slug %}" class="btn btn-primary">Back</a>
+        {% endif %}
+    </div>
+{% endblock %}

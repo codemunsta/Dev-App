@@ -1,0 +1,67 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Api</title>
+
+    <style>
+        body {
+           height: 100%;
+            width: 100%;
+        }
+
+        #map {
+            height: 700px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Maps</h1>
+
+    <div id="map">
+
+    </div>
+    {{ page_vars|json_script:"context"}}
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsctqI83IxHI_LgC5EtMI0tKfG-SeKltw&callback=initMap">
+    </script>
+    <script>
+        let map;
+
+        var content = JSON.parse(document.getElementById('context').textContent);
+        console.log(content)
+        var options = {
+                center: {
+                    lat: content.client_lat, lng: content.client_lng
+                },
+                zoom: 14
+            }
+        
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById("map"), options);
+            const marker = new google.maps.Marker({
+                position: options.center,
+                map: map,
+            });
+
+            for ( var i = 0; i < content.slugs.length ; i++){
+
+                center = {
+                    'lat': content.laun_lats[i],
+                    'lng': content.laun_lngs[i]
+                };
+                console.log(center);
+                const marker = new google.maps.Marker({
+                position: center,
+                map: map,
+            });
+            };
+        };
+
+    </script>
+</body>
+</html>

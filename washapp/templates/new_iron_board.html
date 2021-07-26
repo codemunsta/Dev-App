@@ -1,0 +1,53 @@
+{% load static %}
+<link href="{% static 'main/css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'main/css/dashboard/style.css'%}">
+<body>
+    <div class="container">
+        <hr>
+        <div class="main-content">
+            <div class="col-xl-12 order-xl-1">
+                <div class="card bg-secondary shadow">
+                    <div class="card-header bg-white border-0">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <h6 class="heading-small text-muted mb-4">New Iron Board</h6>
+                            </div>
+                            <div class="col-4 text-right">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="pl-lg-4">
+                                <div class="form-group focused">
+                                    {{ form.as_p }}
+                                </div>
+                            </div>
+                            <hr>
+                            <button class="btn btn-warning btn-sm">Create</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function showAddPopup(triggeringLink) {
+            var name = triggeringLink.id.replace(/^add_/, '');
+            href = triggeringLink.href;
+            var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+            win.focus();
+            return false;
+        }
+        function closePopup(window, newID, newRepr, id) {
+            $(id).append('<option value= ' + newID + ' selected >' + newRepr + '</option>')
+            window.close();
+        }
+    </script>
+</body>

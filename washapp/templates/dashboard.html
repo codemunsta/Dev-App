@@ -1,0 +1,246 @@
+{% load static %}
+<link href="{% static 'main/css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'main/css/dashboard/style.css'%}">
+
+<body>
+  <div class="main-content">
+    <!-- Top navbar -->
+    <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <h2> <a href="{% url 'index'%}" style="color: aliceblue;"><span class="fa fa-cloud" aria-hidden="true"></span> Laundry</a></h2>
+        
+        <!-- User -->
+        <ul class="navbar-nav align-items-center d-none d-md-flex">
+          <li class="nav-item dropdown">
+            <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div class="media align-items-center">
+                <span class="avatar avatar-sm rounded-circle">
+                  <img alt="Image placeholder" src="{{ object.profile_pic.url }}">
+                </span>
+                <div class="media-body ml-2 d-none d-lg-block">
+                  <span class="mb-0 text-sm  font-weight-bold">{{object.client.username}}</span>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url({{ object.header_pic.url }}); background-size: cover; background-position: center top;">
+      <!-- Mask -->
+      <span class="mask bg-gradient-default opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10">
+            <h1 class="display-2 text-white">Hello {{object.client.username}}</h1>
+            <p class="text-white mt-0 mb-5">This is your profile page. You can view your activities, payments and edit your profile here</p>
+            <a href="{% url 'edit_profile' user.client.slug %}" class="btn btn-info">Edit profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+          <div class="card card-profile shadow">
+            <div class="row justify-content-center">
+              <div class="col-lg-3 order-lg-2">
+                <div class="card-profile-image">
+                  <a href="#">
+                    <img src="{{ object.profile_pic.url }}" class="rounded-circle">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+              <div class="d-flex justify-content-between">
+                <a href="#" class="btn btn-sm btn-info mr-4">Payments</a>
+                <a href="{% url 'logout' %}" class="btn btn-sm btn-default float-right">Logout</a>
+              </div>
+            </div>
+            <div class="card-body pt-0 pt-md-4">
+              <div class="row">
+                <div class="col">
+                  <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                    <div>
+                      <span class="heading">{{shirts}}</span>
+                      <span class="description">Shirts</span>
+                    </div>
+                    <div>
+                      <span class="heading">{{weight}}</span>
+                      <span class="description">Weight</span>
+                    </div>
+                    <div>
+                      <span class="heading">{{trousers}}</span>
+                      <span class="description">Trousers</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <h3>
+                  {{object.client.first_name}} {{object.client.last_name}}
+                </h3>
+                <div class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i>{{object.street_address}}, {{object.area}}
+                </div>
+                <hr class="my-4">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique mollitia ipsum minus quibusdam ducimus molestiae, sit earum adipisci</p>
+                {% if Active_laundry_basket %}
+                  Laundry in Progress <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                {% else%}
+                  <a href="{% url 'laundry' %}" class="btn btn-info">New Basket</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">My account</h3>
+                </div>
+                <div class="col-4 text-right">
+                  <a href="{% url 'profile' user.client.slug %}" class="btn btn-sm btn-primary">Profile</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form>
+                {% if Active_laundry_basket %}
+                  <h6 class="heading-small text-muted mb-4">Active Laundry</h6>
+                  <div class="card mb-3 pl-lg-4" style="background-color: rgb(41, 37, 37);">
+                    <div class="row g-0">
+                      <div class="col-lg-4">
+                        <div class="form-group focused">
+                          <img src="{% static 'main/images/waitinglaundry.jfif'%}" class="img-fluid rounded-start" height="100%">
+                        </div>
+                      </div>
+                      <div class="col-lg-7">
+                          <div class="card-body text-center">
+                              <div class="form-group">
+                                {% if Active_laundry_basket.clothing_description == 'quantity' %}
+                                  <p class="btn btn-sm btn-danger">Quantity</p>
+                                  <p class="btn btn-price">Cost: $ {{Active_laundry_basket.get_total_cost}}</p>
+                                  <div class="card-text text-white ">
+                                      <div class="card-profile-stats d-flex justify-content-center">
+                                          <div>
+                                            <span class="heading">{{Active_laundry_basket.shirt}}</span>
+                                            <span class="description">Shirts</span>
+                                          </div>
+                                          <div>
+                                            <span class="heading">{{Active_laundry_basket.trousers}}</span>
+                                            <span class="description">Trunks</span>
+                                          </div>
+                                          <div>
+                                            <span class="heading">{{Active_laundry_basket.suits_and_jackets}}</span>
+                                            <span class="description">Jackets</span>
+                                          </div>
+                                        </div>
+                                  </div>
+                                  {% endif %}
+                                  {% if Active_laundry_basket.clothing_description == 'Weight' %}
+                                  <p class="btn btn-sm btn-info">Weight</p>
+                                  <p class="btn btn-price">Cost: $ {{Active_laundry_basket.get_total_cost}}</p>
+                                  <div class="card-text text-white ">
+                                      <div class="card-profile-stats d-flex justify-content-center">
+                                          <div>
+                                            <span class="heading">{{Active_laundry_basket.weight}}</span>
+                                            <span class="description">Weight</span>
+                                          </div>
+                                        </div>
+                                  </div>
+                                  {% endif %}
+                                  {% if Active_laundry_basket.ordered == False %}
+                                    {% if requests %}
+                                      {% if requests.accepted == None %}
+                                        <bold>awaiting request response <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></bold>
+                                      {% endif %}
+                                    {% else %}
+                                      <a href="{% url 'request'%}" class="btn btn-default">Request LaundryMan</a>
+                                    {% endif %}
+                                  {% else %}
+                                    <div class="card-text text-white">
+                                      <div class=" d-flex justify-content-center">
+                                        <div>
+                                          <span class="heading avatar avatar-sm rounded-circle">
+                                            <img alt="Image placeholder" src="https://demos.creative-tim.com/argon-dashboard/assets/img/theme/team-4.jpg">                                  
+                                          </span>                                  
+                                            <span class="description">{{requests.laundry_man.laundry_man.username}}</span>                                                          
+                                        </div>
+                                      </div>                                                                  
+                                    </div>                                
+                                    <br>
+                                    <a href="{% url 'completed' Active_laundry_basket.slug %}" class="btn btn-success"> Complete Laundry</a>
+                                  {% endif %}
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+                <hr class="my-4">
+                <!-- Description -->
+                <h6 class="heading-small text-muted mb-4">Past Laundry</h6>
+                <div class="pl-lg-4">
+                  <div class="form-group focused">
+                    {% for laundry_baskets in laundry_baskets_group %}
+                      <div class="row">
+                        {% for laundry_basket in laundry_baskets %}
+                          <div class="col-lg-4">
+                            <div class="card" style="background-color: rgb(41, 37, 37);">
+                                <img src="{% static 'main/images/finishedlaundry.JPG'%}" class="card-img-top" alt="...">
+                                <div class="card-body text-center">
+                                  {% if laundry_basket.clothing_description == 'quantity' %}
+                                  <p class="btn btn-sm btn-danger">Quantity</p>
+                                  <div class="card-text text-white">
+                                      <div class="d-flex justify-content-center">
+                                          <div>
+                                            <span class="heading">{{ laundry_basket.shirt }}</span>
+                                            <span class="description">Shirts</span>
+                                          </div>
+                                          <div>
+                                            <span class="heading">10</span>
+                                            <span class="description">Trunks</span>
+                                          </div>
+                                          <div>
+                                            <span class="heading">{{ laundry_basket.suits_and_jackets }}</span>
+                                            <span class="description">Jackets</span>
+                                          </div>
+                                        </div>
+                                  </div><br>
+                                    {% elif laundry_basket.clothing_description == 'Weight' %}
+                                    <p class="btn btn-sm btn-info">Weight</p>
+                                    <div class="card-text text-white">
+                                        <div class="d-flex justify-content-center">
+                                            <div>
+                                              <span class="heading">{{ laundry_basket.weight}}</span>
+                                              <span class="description"> KG </span>
+                                            </div>                              
+                                          </div>
+                                    </div><br>
+                                    {% endif %}
+                                  <p><a href="{% url 'basket' laundry_basket.slug %}" class="btn btn-sm btn-default">view basket</a></p>
+                                </div>
+                              </div>
+                          </div>
+                        {% endfor %}
+                      </div><br>  
+                    {% endfor %}
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

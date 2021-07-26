@@ -1,0 +1,50 @@
+{% load static %}
+<link href="{% static 'main/css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'main/css/dashboard/style.css'%}">
+<body>
+    <div class="container">
+        <hr>
+        <div class="main-content">
+            <div class="col-xl-12 order-xl-1">
+                <div class="card bg-secondary shadow">
+                    <div class="card-header bg-white border-0">
+                        <div class="row align-items-center">
+                            <div class="col-8">
+                                <h6 class="heading-small text-muted mb-4">Request Laundry Man</h6>
+                            </div>
+                            <div class="col-4 text-right">
+                                <a href="{% url 'dashboard' user.client.slug %}" class="btn btn-sm btn-danger">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="pl-lg-4">
+                                <div class="form-group focused">
+                                    {{ form.as_p }}
+                                </div>
+                            </div>
+                            <hr>
+                            <button class="btn btn-warning btn-sm">Continue</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <script>
+        var name = '{{ user.client.id }}';
+        document.getElementById('client').value = name;
+
+        var laundry_basket = '{{ laundry_basket.id }}'
+        document.getElementById('laundry').value = laundry_basket
+
+        var number_of_request = {{ no_of_request }};
+        var slug = '{{ user.username }}-request-' + (number_of_request + 1).toString();
+        document.getElementById('slug').value = slug;
+    </script>
+</body>
