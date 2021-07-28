@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth.models import User
 import requests
 from users.models import Client, LaundryMan
@@ -6,8 +7,7 @@ import pprint
 
 def get_client_location(client):
     user = Client.objects.get(client=client)
-
-    API_KEY = 'AIzaSyBsctqI83IxHI_LgC5EtMI0tKfG-SeKltw'
+    API_KEY = os.environ['Map_key']
 
     base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
 
@@ -27,11 +27,11 @@ def get_client_location(client):
         lng = response['results'][0]['geometry']['location']['lng']
         print(lat, lng)
 
-        return(lat, lng)
+        return lat, lng
 
 
 def get_map_location():
-    API_KEY = 'AIzaSyBsctqI83IxHI_LgC5EtMI0tKfG-SeKltw'
+    API_KEY = os.environ['Map_key']
 
     base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
 
@@ -59,4 +59,31 @@ def get_map_location():
             lat.append(response['results'][0]['geometry']['location']['lat'])
             lng.append(response['results'][0]['geometry']['location']['lng'])
 
-    return(lat, lng, slugs)
+    return lat, lng, slugs
+
+
+def distance_matrix(client, laundry_man):
+    user = Client.objects.get(client=client)
+    laundryman = LaundryMan.objects.get(laundry_man=laundry_man)
+    address = f'{user.house_number} {user.street_address}, {user.area}, {user.state}'
+    laundry_address = f'{laundryman.house_number} {laundryman.street_address}, {laundryman.area}, {laundryman.state}'
+    API_KEY = os.environ['Map_Key']
+    base_url = 'https://maps.googleapis.com/maps/api/distancematrix/json?'
+
+    params = {
+        'key': API_KEY,
+        'origins': address,
+        'destinations': laundry_address,
+        'mode': 'car'
+    }
+
+    response = requests.get(base_url, params=params).json()
+    if response['status'] == 'OK':
+        result = response['rows']
+        for element in result:
+            for distance in element['elements']:
+                distance_m = distance['distance']['value']
+                return distance_m
+    else:
+        print('An error occurred')
+        return

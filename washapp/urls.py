@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import index, Dashboard, NewLaundry, PastBasket, LaundryRequest, LaundryOffice,\
     accept_request, reject_request, RequestView, completed, NewIronBoard, ProfileView, new_laundry,\
-        LaundryProfileView, map_request, choose_laundry_man
+    LaundryProfileView, map_request, choose_laundry_man, random_select
 
 urlpatterns = [
     path('', index, name='index'),
@@ -19,5 +19,6 @@ urlpatterns = [
     path('completed/<slug>', completed, name='completed'),
     path('Ironing_Board', NewIronBoard.as_view(), name='ironing_board'),
     path('map/select', map_request, name='map_select'),
+    path('random/<slug>', random_select, name='random_select'),
     path('request/<slug>', choose_laundry_man, name='request_laundry'),
 ]
