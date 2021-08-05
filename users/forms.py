@@ -66,7 +66,8 @@ class ClientForm(forms.ModelForm):
 class LaundryManForm(forms.ModelForm):
     class Meta:
         model = LaundryMan
-        fields = ('laundry_man', 'phone_number', 'auxiliary_phone_number', 'house_number', 'street_address', 'area', 'city', 'state', 'dryclean_company', 'slug')
+        fields = ('laundry_man', 'phone_number', 'auxiliary_phone_number', 'house_number', 'street_address', 'area',
+                  'city', 'state', 'dry_clean_company', 'slug')
 
         widgets = {
             'laundry_man': forms.TextInput(attrs={'class': 'form-control', 'value': '', 'id': 'laundry_man', 'type': 'hidden'}),
@@ -77,7 +78,7 @@ class LaundryManForm(forms.ModelForm):
             'area': forms.TextInput(attrs={'class': 'form-control'}),
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'state': forms.TextInput(attrs={'class': 'form-control'}),
-            'dryclean_company': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
+            'dry_clean_company': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'value': '', 'id': 'slug', 'type': 'hidden'}),
         }
 

@@ -19,6 +19,6 @@ urlpatterns = [
     path('completed/<slug>', completed, name='completed'),
     path('Ironing_Board', NewIronBoard.as_view(), name='ironing_board'),
     path('map/select', map_request, name='map_select'),
-    path('random/<slug>', random_select, name='random_select'),
+    path('random/', random_select, name='random_select'),
     path('request/<slug>', choose_laundry_man, name='request_laundry'),
 ]

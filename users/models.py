@@ -37,7 +37,7 @@ class LaundryMan(models.Model):
     state = models.TextField(max_length=150)
     about = models.TextField(null=True, blank=True)
     verified = models.BooleanField(default=False)
-    dryclean_company = models.BooleanField()
+    dry_clean_company = models.BooleanField()
     active = models.BooleanField(default=False)
     rating = models.FloatField(null=True, blank=True)
     slug = models.SlugField(unique=True)

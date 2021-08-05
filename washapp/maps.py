@@ -2,6 +2,7 @@ import os
 from django.contrib.auth.models import User
 import requests
 from users.models import Client, LaundryMan
+from .models import LaundryBasket
 import pprint
 
 
@@ -30,12 +31,16 @@ def get_client_location(client):
         return lat, lng
 
 
-def get_map_location():
+def get_map_location(client):
     API_KEY = os.environ['Map_key']
 
     base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+    laundry_basket = LaundryBasket.objects.get(user=client, ordered=False)
 
-    laundry_men = LaundryMan.objects.all()
+    if laundry_basket.clothing_description == 'dry clean':
+        laundry_men = LaundryMan.objects.filter(verified=True, dry_clean_company=True)
+    else:
+        laundry_men = LaundryMan.objects.all()
     pprint.pprint(laundry_men)
     lat = []
     lng = []
@@ -64,7 +69,7 @@ def get_map_location():
 
 def distance_matrix(client, laundry_man):
     user = Client.objects.get(client=client)
-    laundryman = LaundryMan.objects.get(laundry_man=laundry_man)
+    laundryman = laundry_man
     address = f'{user.house_number} {user.street_address}, {user.area}, {user.state}'
     laundry_address = f'{laundryman.house_number} {laundryman.street_address}, {laundryman.area}, {laundryman.state}'
     API_KEY = os.environ['Map_Key']

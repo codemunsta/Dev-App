@@ -112,7 +112,8 @@
             </div>
             <div class="card-body">
               <form>
-                {% if Active_laundry_basket %}
+                {% if Active_laundry_baskets %}
+                  {% for Active_laundry_basket in Active_laundry_baskets %}
                   <h6 class="heading-small text-muted mb-4">Active Laundry</h6>
                   <div class="card mb-3 pl-lg-4" style="background-color: rgb(41, 37, 37);">
                     <div class="row g-0">
@@ -124,9 +125,14 @@
                       <div class="col-lg-7">
                           <div class="card-body text-center">
                               <div class="form-group">
-                                {% if Active_laundry_basket.clothing_description == 'quantity' %}
-                                  <p class="btn btn-sm btn-danger">Quantity</p>
+                                {% if Active_laundry_basket.clothing_description == 'quantity' or Active_laundry_basket.clothing_description == 'dry clean'%}
+                                  {% if Active_laundry_basket.clothing_description == 'quantity'%}
+                                    <p class="btn btn-sm btn-danger">Quantity</p>
+                                  {% elif Active_laundry_basket.clothing_description == 'dry clean' %}
+                                    <p class="btn btn-sm btn-success">Dry Clean</p>
+                                  {% endif %}
                                   <p class="btn btn-price">Cost: $ {{Active_laundry_basket.get_total_cost}}</p>
+                                  <p class="btn btn-price">Date required: $ {{Active_laundry_basket.date_required}}</p>
                                   <div class="card-text text-white ">
                                       <div class="card-profile-stats d-flex justify-content-center">
                                           <div>
@@ -147,6 +153,7 @@
                                   {% if Active_laundry_basket.clothing_description == 'Weight' %}
                                   <p class="btn btn-sm btn-info">Weight</p>
                                   <p class="btn btn-price">Cost: $ {{Active_laundry_basket.get_total_cost}}</p>
+                                  <p class="btn btn-price">Date required: $ {{Active_laundry_basket.date_required}}</p>
                                   <div class="card-text text-white ">
                                       <div class="card-profile-stats d-flex justify-content-center">
                                           <div>
@@ -173,6 +180,7 @@
                       </div>
                     </div>
                   </div>
+                  {% endfor %}
                 {% endif %}
                 {% if request_group %}
                     <hr class="my-4">
@@ -190,8 +198,13 @@
                                                     <p><h6 class="heading-small text-muted mb-4">
                                                         Location: {{request.client.house_number}}, {{request.client.street_address}}, {{request.client.area}}
                                                     </h6></p>
-                                                    {% if request.laundry_basket.clothing_description == 'quantity' %}
+                                                    <p><h6 class="heading-small text-muted mb-4">Date required: request.laundry_basket.date_required </h6></p>
+                                                    {% if request.laundry_basket.clothing_description == 'quantity' or request.laundry_basket.clothing_description == 'dry clean'%}
+                                                      {% if request.laundry_basket.clothing_description == 'quantity'%}
                                                         <p class="btn btn-sm btn-danger">Quantity</p>
+                                                      {% elif request.laundry_basket.clothing_description == 'dry clean' %}
+                                                        <p class="btn btn-sm btn-success">Dry Clean</p>
+                                                      {% endif %}
                                                         <div class="card-text text-white">
                                                             <div class="d-flex justify-content-center">
                                                                 <div>
@@ -244,8 +257,12 @@
                             <div class="card" style="background-color: rgb(41, 37, 37);">
                                 <img src="{% static 'main/images/finishedlaundry.JPG'%}" class="card-img-top" alt="...">
                                 <div class="card-body text-center">
-                                  {% if laundry_basket.clothing_description == 'quantity' %}
-                                  <p class="btn btn-sm btn-danger">Quantity</p>
+                                  {% if Active_laundry_basket.clothing_description == 'quantity' or Active_laundry_basket.clothing_description == 'dry clean'%}
+                                      {% if Active_laundry_basket.clothing_description == 'quantity'%}
+                                        <p class="btn btn-sm btn-danger">Quantity</p>
+                                      {% elif Active_laundry_basket.clothing_description == 'dry clean' %}
+                                        <p class="btn btn-sm btn-success">Dry Clean</p>
+                                      {% endif %}
                                   <div class="card-text text-white">
                                       <div class="d-flex justify-content-center">
                                           <div>

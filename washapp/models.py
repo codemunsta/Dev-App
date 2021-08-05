@@ -49,12 +49,13 @@ class LaundryBasket(models.Model):
     trousers = models.IntegerField(blank=True, null=True)
     suits_and_jackets = models.IntegerField(blank=True, null=True)
     natives = models.IntegerField(blank=True, null=True)
-    underware = models.IntegerField(blank=True, null=True)
+    underwear = models.IntegerField(blank=True, null=True)
     bedsheets = models.IntegerField(blank=True, null=True)
     blankets_and_duvets = models.IntegerField(blank=True, null=True)
     iron = models.OneToOneField(Iron, null=True, blank=True, on_delete=models.SET_NULL)
     ordered = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
+    date_required = models.DateTimeField(null=True)
     completed = models.BooleanField(default=False)
     rating = models.IntegerField(choices=RATING, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
@@ -87,7 +88,7 @@ class LaundryBasket(models.Model):
         cost = shirt_cost + trouser_cost + jacket_cost
         return cost
 
-    def get_dryclean_cost(self):
+    def get_dry_clean_cost(self):
         shirt_rate = 300
         trouser_rate = 450
         jacket_rate = 700
@@ -122,7 +123,7 @@ class LaundryBasket(models.Model):
                 iron_cost = 0
 
         elif self.clean_fields == 'dry clean':
-            wash_cost = self.get_dryclean_cost()
+            wash_cost = self.get_dry_clean_cost()
 
         total_cost = wash_cost + iron_cost
         return total_cost
@@ -144,7 +145,6 @@ class Request(models.Model):
     viewed = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)
     time_created = models.DateTimeField(auto_now_add=True)
-    date_required = models.DateTimeField()
     time_accepted = models.DateTimeField(blank=True, null=True)
     slug = models.SlugField(unique=True)
 

@@ -85,7 +85,7 @@ class LaundryOffice(DetailView):
         context = super(LaundryOffice, self).get_context_data(**kwargs)
         laundry_man = LaundryMan.objects.get(laundry_man=self.request.user)
         if LaundryBasket.objects.filter(laundry_man=laundry_man, completed=False):
-            context['Active_laundry_basket'] = LaundryBasket.objects.get(laundry_man=laundry_man, completed=False)
+            context['Active_laundry_baskets'] = LaundryBasket.objects.filter(laundry_man=laundry_man, completed=False)
         requests = Request.objects.filter(laundry_man=laundry_man, viewed=False).order_by('-id')
         laundry_baskets = LaundryBasket.objects.filter(laundry_man=laundry_man, completed=True).order_by('-date_created')
         n = 3
@@ -118,7 +118,7 @@ class LaundryProfileView(DetailView):
         context = super(LaundryProfileView, self).get_context_data(**kwargs)
         laundry_man = LaundryMan.objects.get(laundry_man=self.request.user)
         if LaundryBasket.objects.filter(laundry_man=laundry_man, completed=False):            
-            context['Active_laundry_basket'] = LaundryBasket.objects.get(laundry_man=laundry_man, completed=False)
+            context['Active_laundry_basket'] = LaundryBasket.objects.filter(laundry_man=laundry_man, completed=False)
         laundry_basket = LaundryBasket.objects.filter(laundry_man=laundry_man, completed=True)
         shirts = 0 
         trousers = 0
@@ -174,7 +174,7 @@ def new_laundry(request):
 
         laundry_basket.save()
         return redirect('dashboard', slug=client.slug)
-    else :
+    else:
         pass
 
 
@@ -217,19 +217,24 @@ class LaundryRequest(CreateView):
         return context
 
 
-def random_select(request, slug):
-    client = Client.objects.get(request.user.client)
-    laundry_basket = LaundryBasket.objects.get(slug=slug)
-    laundry_men = LaundryMan.objects.all()
+def random_select(request):
+    user = request.user
+    client = Client.objects.get(client=request.user)
+    laundry_basket = LaundryBasket.objects.get(user=client, ordered=False)
+    if laundry_basket.clothing_description == 'dry clean':
+        laundry_men = LaundryMan.objects.filter(verified=True, dry_clean_company=True)
+    else:
+        laundry_men = LaundryMan.objects.filter(verified=True)
     laundry_men_for_select = []
     for laundry_man in laundry_men:
-        distance = maps.distance_matrix(client=client, laundry_man=laundry_man)
+        distance = maps.distance_matrix(client=user, laundry_man=laundry_man)
         if distance is not None and distance < 10000:
             laundry_men_for_select.append(laundry_man)
     chosen = random.choice(laundry_men_for_select)
-    laundry_man = LaundryMan.objects.get(laundry_man=chosen)
+    laundry_man = chosen
+    no_of_request = Request.objects.filter(client=client).count()
     new_request = Request.objects.create(client=client, laundry_man=laundry_man, laundry_basket=laundry_basket)
-    new_request.slug = f'{client.username}-to-{laundry_man.laundry_man.username}'
+    new_request.slug = f'{client.client.username}-request-{no_of_request + 1}'
     new_request.save()
     sms.random_created_sms(client=client, request=new_request, laundry_basket=laundry_basket)
     sms.send_request_sms(laundry_man=laundry_man, request=new_request, laundry_basket=laundry_basket)
@@ -237,12 +242,15 @@ def random_select(request, slug):
 
 
 def map_request(request):
-    client = request.user
-    client_lat, client_lng = maps.get_client_location(client)
-
-    laundry_men = LaundryMan.objects.all()
-    laun_lats, laun_lngs, slugs = maps.get_map_location()
-    print(laun_lats)
+    user = request.user
+    client = Client.objects.get(client=user)
+    laundry_basket = LaundryBasket.objects.get(user=client, ordered=False)
+    client_lat, client_lng = maps.get_client_location(user)
+    if laundry_basket.clothing_description == 'dry clean':
+        laundry_men = LaundryMan.objects.filter(verified=True, dry_clean_company=True)
+    else:
+        laundry_men = LaundryMan.objects.all()
+    laun_lats, laun_lngs, slugs = maps.get_map_location(client)
 
     context = {
         'page_vars': {
@@ -263,8 +271,9 @@ def choose_laundry_man(request, slug):
     user = Client.objects.get(client=request.user)
     laundry_man = LaundryMan.objects.get(slug=slug)
     laundry_basket = LaundryBasket.objects.get(user=user, ordered=False)
+    no_of_request = Request.objects.filter(client=request.user.client).count()
     new_request = Request.objects.create(client=user, laundry_man=laundry_man, laundry_basket=laundry_basket)
-    new_request.slug = f'{user.username}-to-{laundry_man.laundry_man.username}'
+    new_request.slug = f'{user.client.username}-request-{no_of_request + 1}'
     new_request.save()
     sms.request_created_sms(client=user, request=new_request, laundry_basket=laundry_basket)
     sms.send_request_sms(laundry_man=laundry_man, request=new_request, laundry_basket=laundry_basket)
@@ -292,7 +301,7 @@ def accept_request(request, slug):
     laundry_request.time_accepted = timezone.now()
     laundry_request.save()
     requesting_user = laundry_request.client
-    laundry_basket = LaundryBasket.objects.filter(user=requesting_user, ordered=False, completed=False)[0]
+    laundry_basket = LaundryBasket.objects.filter(user=requesting_user, ordered=False, completed=False)
     laundry_basket.ordered = True
     laundry_basket.laundry_man = laundry_man
     laundry_basket.save()

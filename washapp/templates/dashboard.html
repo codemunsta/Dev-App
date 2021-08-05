@@ -126,7 +126,7 @@
                       <div class="col-lg-7">
                           <div class="card-body text-center">
                               <div class="form-group">
-                                {% if Active_laundry_basket.clothing_description == 'quantity' %}
+                                {% if Active_laundry_basket.clothing_description == 'quantity' or Active_laundry_basket.clothing_description == 'dry clean'%}
                                   <p class="btn btn-sm btn-danger">Quantity</p>
                                   <p class="btn btn-price">Cost: $ {{Active_laundry_basket.get_total_cost}}</p>
                                   <div class="card-text text-white ">
@@ -164,7 +164,12 @@
                                         <bold>awaiting request response <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></bold>
                                       {% endif %}
                                     {% else %}
-                                      <a href="{% url 'request'%}" class="btn btn-default">Request LaundryMan</a>
+                                      <a href="{% url 'map_select'%}" class="btn btn-default btn-sm">Map request</a>
+                                      <a href="{% url 'random_select'%}" class="btn btn-danger btn-sm">Random request</a>
+                                      {% if Active_laundry_basket.clothing_description == 'dry clean' %}
+                                      {% else %}
+                                        <a href="{% url 'request'%}" class="btn btn-info btn-sm">list request</a>
+                                      {% endif %}
                                     {% endif %}
                                   {% else %}
                                     <div class="card-text text-white">
@@ -198,8 +203,12 @@
                             <div class="card" style="background-color: rgb(41, 37, 37);">
                                 <img src="{% static 'main/images/finishedlaundry.JPG'%}" class="card-img-top" alt="...">
                                 <div class="card-body text-center">
-                                  {% if laundry_basket.clothing_description == 'quantity' %}
-                                  <p class="btn btn-sm btn-danger">Quantity</p>
+                                  {% if Active_laundry_basket.clothing_description == 'quantity' or Active_laundry_basket.clothing_description == 'dry clean'%}
+                                  {% if Active_laundry_basket.clothing_description == 'quantity'%}
+                                    <p class="btn btn-sm btn-danger">Quantity</p>
+                                  {% elif Active_laundry_basket.clothing_description == 'dry clean' %}
+                                    <p class="btn btn-sm btn-success">Dry Clean</p>
+                                  {% endif %}
                                   <div class="card-text text-white">
                                       <div class="d-flex justify-content-center">
                                           <div>

@@ -2,10 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a54cdbc2-1499-48b5-b98f-3353f15635a7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/washapp/sms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/washapp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/washapp/maps.py" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/maps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/washapp/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/washapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/washapp/sms.py" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/sms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/washapp/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/washapp/templates/google_select.html" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/templates/google_select.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/washapp/templates/office.html" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/templates/office.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/washapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/washapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/washapp/views.py" afterDir="false" />
     </list>
@@ -36,7 +45,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../maptest" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -52,9 +61,13 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1627407390651">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1628149538718">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1627407390651" />
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1628149538718" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1628148631892">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1628148631892" />
   </component>
 </project>
